@@ -17,7 +17,8 @@ class Topic(models.Model):
       last_updated=models.DateTimeField(auto_now_add=True)
       boards=models.ForeignKey(Board,on_delete=models.CASCADE,related_name='topic')
       starter=models.ForeignKey(User,on_delete=models.CASCADE,related_name='topic')
-
+      def __str__(self):
+          return self.subject
 
 class Post(models.Model):
       message=models.TextField(max_length=255)
@@ -26,6 +27,8 @@ class Post(models.Model):
       updated_at=models.DateTimeField(null=True)
       created_by=models.ForeignKey(User,on_delete=models.CASCADE,related_name='post')
       updated_by=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='+')
+      def __str__(self):
+          return self.message
 
 
 

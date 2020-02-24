@@ -5,10 +5,33 @@
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
   </head>
   <body>
-  <body>
     <div class="container" style="background-color:#e9ecef;padding-top:5px;padding-bottom:5px;color:grey;paadding-left:20px">
         <a href="{% url 'home' %}">Boards</a>/{{ board.name }} 
     </div>
-  </body>
+    <div style="padding-top:20px; padding-right:10px"><a  style="background-color:grey; color:white" href="{% url 'new_topics' board.pk %}"><b>+ New Topic</b></a></div>
+    <div style="padding-left:20%; padding-top:20px;">
+    <table class="table" style="border:2px solid;" >
+       <thead class="thead-inverse">
+          <tr style="background-color:black; color:white;padding-top:15px">
+            <th style="border:2px solid grey; padding-left:10px;">Topic</th>
+            <th style="border:2px solid grey; padding-left:10px;">Starter</th>
+            <th style="border:2px solid grey; padding-left:10px;">Replies</th>
+            <th style="border:2px solid grey; padding-left:10px;">Views</th>
+            <th style="border:2px solid grey; padding-left:10px;">Last Update</th>
+          </tr>
+       </thead>
+       <tbody>
+         {% for topic in board.topic.all %}
+            <tr tyle=" padding-top:15px">
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.subject }}</td>
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.starter.username }}</td>
+              <td style="border:2px solid grey; padding-left:10px;">0</td>
+              <td style="border:2px solid grey; padding-left:10px;">0</td>
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.last_updated }}</td>
+            </tr>
+         {% endfor %}
+       </tbody>
+    </table>
+    </div>
   </body>
 </html>
