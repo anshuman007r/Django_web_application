@@ -22,10 +22,13 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^$',views.home,name='home'),
     url(r'^signup/$',account_view.signup,name='signup'),
+    url(r'^boards/(?P<pk>\d+)/topic/(?P<topic_pk>\d+)/$',views.topic_post,name='topic_post'),
+    url(r'^boards/(?P<pk>\d+)/topic/(?P<topic_pk>\d+)/reply/$',views.reply_post,name='reply_post'),
     url(r'^logout/$',auth_views.LogoutView.as_view(),name='logout'),
     url(r'^login/$',auth_views.LoginView.as_view(template_name='login.html'),name='login'),
     url(r'^boards/(?P<pk>\d+)/$',views.board_topics,name='board_topics'),
     url(r'^boards/(?P<pk>\d+)/new/$',views.new_topics,name='new_topics'),
+ 
     url(r'^admin/', admin.site.urls),
     url(r'^reset/$',
     auth_views.PasswordResetView.as_view(

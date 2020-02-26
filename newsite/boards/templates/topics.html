@@ -1,11 +1,11 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}
+{% load humanize %}<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>{% block title %}Django Boards{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
   </head>
   <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -47,13 +47,13 @@
           </tr>
        </thead>
        <tbody>
-         {% for topic in board.topic.all %}
+         {% for topic in topic.all %}
             <tr tyle=" padding-top:15px">
-              <td style="border:2px solid grey; padding-left:10px;">{{ topic.subject }}</td>
+              <td style="border:2px solid grey; padding-left:10px;"><a href="{% url 'topic_post' board.pk topic.pk%}">{{ topic.subject }}</a></td>
               <td style="border:2px solid grey; padding-left:10px;">{{ topic.starter.username }}</td>
-              <td style="border:2px solid grey; padding-left:10px;">0</td>
-              <td style="border:2px solid grey; padding-left:10px;">0</td>
-              <td style="border:2px solid grey; padding-left:10px;">{{ topic.last_updated }}</td>
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.replies }}</td>
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.watch }}</td>
+              <td style="border:2px solid grey; padding-left:10px;">{{ topic.last_updated|naturaltime  }}</td>
             </tr>
          {% endfor %}
        </tbody>
@@ -61,6 +61,6 @@
     </div>
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>s
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
   </body>
 </html>
