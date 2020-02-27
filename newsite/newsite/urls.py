@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from accounts import views as account_view
 from boards import views
+from boards.views import PostUpdateView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -50,6 +51,10 @@ urlpatterns = [
       name='password_change'),
     url(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
       name='password_change_done'),
+    url(r'^boards/(?P<pk>\d+)/topic/(?P<topic_pk>\d+)/post/(?P<post_pk>\d+)/edit/$',
+      views.PostUpdateView.as_view(), name='edit_post'),
+    url(r'^settings/account/$', account_view.UserUpdateView.as_view(), name='my_account'),
+
 ]
 
 

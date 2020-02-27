@@ -8,6 +8,10 @@ from .models import Board, Topic, Post
 from django.contrib.auth.models import User
 from .forms import NewTopicForm
 from .reply_form import PostForm
+from django.views.generic import UpdateView
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 @login_required
 def home(request):
    boards=Board.objects.all()
@@ -34,9 +38,9 @@ def new_topics(request,pk):
                created_by=request.user)
           return redirect('topic_post',pk=pk,topic_pk=topic_pk)
     else:
-       form=NewTopicForm()   
-    
+       form=NewTopicForm()      
     return render(request, 'posts.html', {'board': board,'form':form})
+
 @login_required
 def topic_post(request,pk,topic_pk):
     topic=get_object_or_404(Topic,boards__pk=pk,pk=topic_pk)
@@ -55,10 +59,32 @@ def reply_post(request,pk,topic_pk):
           post.topic=topic
           post.created_by=request.user
           post.save()
+          
+          topic.last_updated=timezone.now()
+          topic.save()
           return redirect('topic_post',pk=pk,topic_pk=topic_pk)
        else:
           form=PostForm(request.POST)
     return render(request,'reply_post.html',{'topic':topic,'form':form})
+
+@method_decorator(login_required, name='dispatch')
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('message', )
+    template_name = 'edit_post.html'
+    pk_url_kwarg = 'post_pk'
+    context_object_name = 'post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.updated_by = self.request.user
+        post.updated_at = timezone.now()
+        post.save()
+        return redirect('topic_post', pk=post.topic.boards.pk, topic_pk=post.topic.pk)
+
+
+
+
 
           
     
